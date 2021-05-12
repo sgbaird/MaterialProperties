@@ -1,0 +1,1642 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     82816,       1634]
+NotebookOptionsPosition[     81632,       1610]
+NotebookOutlinePosition[     82051,       1626]
+CellTagsIndexPosition[     82008,       1623]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "MaterialProperties`"}]], "Input",
+ CellChangeTimes->{{3.808067952314581*^9, 3.8080679544849644`*^9}, {
+  3.8080691943799124`*^9, 3.808069196937624*^9}},
+ CellLabel->"In[84]:=",ExpressionUUID->"aadfb696-1d75-44eb-9f31-e115310550fb"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"?", "MaterialProperties"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", 
+  RowBox[{"\"\<Fe3C\>\"", ",", "\"\<spacegroup\>\"", ",", "\"\<number\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", 
+  RowBox[{
+  "\"\<Fe3C\>\"", ",", "\"\<spacegroup\>\"", ",", "\"\<number\>\"", ",", 
+   "1"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", 
+  RowBox[{
+  "\"\<Fe3C\>\"", ",", "\"\<spacegroup\>\"", ",", "\"\<number\>\"", ",", 
+   "0"}], "]"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", 
+  RowBox[{"\"\<Fe3C\>\"", ",", "\"\<spacegroup\>\""}], 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", "\"\<Fe3C\>\"", 
+  "]"}], "\[IndentingNewLine]", 
+ RowBox[{"MaterialProperties", "[", 
+  RowBox[{"\"\<Fe3C\>\"", ",", "\"\<\>\"", ",", "\"\<\>\"", ",", "0"}], 
+  "]"}]}], "Input",
+ CellChangeTimes->{{3.808067845834652*^9, 3.8080678541665535`*^9}, {
+   3.8080681816259756`*^9, 3.8080681867119937`*^9}, 3.808069140187024*^9, {
+   3.8080692033064375`*^9, 3.8080692062100954`*^9}, {3.80806924206194*^9, 
+   3.808069242180661*^9}, {3.8080693313539734`*^9, 3.8080693337486324`*^9}, {
+   3.8080694336802273`*^9, 3.808069477260599*^9}, {3.808070092577922*^9, 
+   3.8080700964201756`*^9}, {3.8080709996442966`*^9, 3.8080710033997574`*^9}, 
+   3.8080716051823463`*^9, {3.8080724121499915`*^9, 3.80807241570932*^9}, {
+   3.808072474984271*^9, 3.8080724787658157`*^9}, {3.808072553701354*^9, 
+   3.808072637919877*^9}, {3.8080726782572794`*^9, 3.8080726806446114`*^9}, {
+   3.8080727598835096`*^9, 3.80807277548772*^9}},
+ CellLabel->"In[85]:=",ExpressionUUID->"993b5167-dd9b-44c9-866c-797c35916d34"],
+
+Cell[BoxData[
+ InterpretationBox[
+  StyleBox[
+   FrameBox[
+    DynamicModuleBox[{System`InformationDump`open$$ = False, 
+     System`InformationDump`mouseOver$$ = False}, 
+     PaneSelectorBox[{True->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False,
+             BaseStyle -> None],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"use the REST API to get materials data from \
+materialsproject.org.  https://materialsproject.org/docs/api section 4.3.1 \
+for list of available properties. This implementation has limited \
+functionality (2020-09-02), so try out the website or direct API calls \
+instead of this wrapper function via URLBuild, URLExecute, and Association \
+Key Mapping (e.g. <|\\\"a\\\"->b|>[\\\"a\\\"]). You will also need to specify \
+a personal key by updating the myKey value inside the MaterialProperties \
+function and resaving MaterialProperties.nb as MaterialProperties.m in a \
+$Path folder (change filetype to .m in dropdown). I recommend \
+workflow/GetDataFromARESTfulAPI for some basic guidelines on accessing \
+APIs.\\n\\nExample usage:\\n\\tMaterialProperties[\\\"Fe3C\\\"] (*get \
+material properties for \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\"] \
+(*get the spacegroup properties of \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\", \
+\\\"number\\\"] (*get the spacegroup number of \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C*) \
+\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"\\\" ,\\\"\\\" , 0] (*get material \
+properties for all database entries of \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"\\\" ,\\\"\\\" , 4] \
+(*get material properties for the first 4 database entries of \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C (or all entries, if # entries < \
+4);\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\", \\\"number\\\", \
+0] (*get a list of possible spacegroup numbers for \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C*)\\n\\nGeneral URI format: Get \
+https://www.materialsproject.org/rest/v2/materials/{material id, formula, or \
+chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\\n\"\>", 
+             "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          PaneBox[GridBox[{
+             {
+              
+              DynamicModuleBox[{System`InformationDump`open$$ = {
+               False, False, False, False, False, False, False, False, False, 
+                False, False, False}}, 
+               StyleBox[GridBox[{
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Definitions\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"Definitions\"",
+                    TooltipStyle->"TextStyling"],
+                    Annotation[#, "Definitions", "Tooltip"]& ], GridBox[{
+                    {
+                    RowBox[{
+                    RowBox[{"MaterialProperties", "[", 
+                    RowBox[{"Private`formula_String", ",", 
+                    RowBox[{"Private`property_", ":", "\<\"\"\>"}], ",", 
+                    RowBox[{"Private`subproperty_", ":", "\<\"\"\>"}], ",", 
+                    RowBox[{"Private`requestedEntries_Integer", ":", "1"}]}], 
+                    "]"}], ":=", 
+                    RowBox[{"Module", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "Private`urlRoot", ",", "Private`myKey", ",", 
+                    "Private`requestURI", ",", "Private`response", ",", 
+                    "Private`maxEntries", ",", "Private`numEntries", ",", 
+                    "Private`propertyKey", ",", "Private`subpropertyKey", ",",
+                     "Private`out"}], "}"}], ",", 
+                    RowBox[{
+                    RowBox[{
+                    "Private`urlRoot", 
+                    "=", "\<\"https://www.materialsproject.org/rest/v2/\
+materials/\"\>"}], ";", 
+                    RowBox[{
+                    "Private`myKey", "=", "\<\"JHlWQRu5mpE4FC72\"\>"}], ";", 
+                    RowBox[{"Private`requestURI", "=", 
+                    RowBox[{"URLBuild", "[", 
+                    RowBox[{
+                    RowBox[{"{", 
+                    RowBox[{
+                    "Private`urlRoot", ",", "Private`formula", 
+                    ",", "\<\"vasp\"\>", ",", "Private`property"}], "}"}], 
+                    ",", 
+                    RowBox[{"{", 
+                    RowBox[{"\<\"API_KEY\"\>", "\[Rule]", "Private`myKey"}], 
+                    "}"}]}], "]"}]}], ";", 
+                    RowBox[{"Private`response", "=", 
+                    RowBox[{"URLExecute", "[", 
+                    RowBox[{"Private`requestURI", ",", "\<\"rawJSON\"\>"}], 
+                    "]"}]}], ";", 
+                    RowBox[{"Private`maxEntries", "=", 
+                    RowBox[{"Length", "[", "Private`response", "]"}]}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"Private`requestedEntries", "\[Equal]", "0"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"Private`numEntries", "=", "Private`maxEntries"}],
+                     ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"Private`numEntries", "=", 
+                    RowBox[{"Min", "[", 
+                    RowBox[{"{", 
+                    RowBox[{
+                    "Private`maxEntries", ",", "Private`requestedEntries"}], 
+                    "}"}], "]"}]}], ";"}]}], "]"}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"Private`property", "\[Equal]", "\<\"\"\>"}], ",", 
+                    RowBox[{
+                    RowBox[{"Private`propertyKey", "=", 
+                    RowBox[{"Sequence", "[", "]"}]}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{"Private`propertyKey", "=", "Private`property"}], 
+                    ";"}]}], "]"}], ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{"Private`subproperty", "\[Equal]", "\<\"\"\>"}], 
+                    ",", 
+                    RowBox[{
+                    RowBox[{"Private`subpropertyKey", "=", 
+                    RowBox[{"Sequence", "[", "]"}]}], ";"}], ",", 
+                    RowBox[{
+                    RowBox[{
+                    "Private`subpropertyKey", "=", "Private`subproperty"}], 
+                    ";"}]}], "]"}], ";", 
+                    RowBox[{"Private`out", "=", 
+                    RowBox[{
+                    RowBox[{"(", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Lookup", "[", 
+                    RowBox[{"Private`response", ",", "\<\"response\"\>"}], 
+                    "]"}], "\[LeftDoubleBracket]", "#1", 
+                    "\[RightDoubleBracket]"}], "[", "Private`propertyKey", 
+                    "]"}], "[", "Private`subpropertyKey", "]"}], "&"}], ")"}],
+                     "/@", 
+                    RowBox[{"Range", "[", "Private`numEntries", "]"}]}]}], 
+                    ";", 
+                    RowBox[{"If", "[", 
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{
+                    RowBox[{"Length", "[", "Private`out", "]"}], "\[Equal]", 
+                    "1"}], "&&", 
+                    RowBox[{"Private`requestedEntries", "\[Equal]", "1"}]}], 
+                    ",", 
+                    RowBox[{
+                    "Private`out", "\[LeftDoubleBracket]", "1", 
+                    "\[RightDoubleBracket]"}], ",", "Private`out"}], 
+                    "]"}]}]}], "]"}]}]}
+                    },
+                    DefaultBaseStyle->"Column",
+                    GridBoxAlignment->{"Columns" -> {{Left}}},
+                    
+                    GridBoxItemSize->{
+                    "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}]},
+                  {
+                   TagBox[
+                    TooltipBox[
+                    StyleBox["\<\" Full Name\"\>", "InformationRowLabel",
+                    StripOnInput->False],
+                    "\"FullName\"",
+                    TooltipStyle->"TextStyling"],
+                    
+                    Annotation[#, "FullName", 
+                    "Tooltip"]& ], "\<\"MaterialProperties`MaterialProperties\
+\"\>"}
+                 },
+                 AutoDelete->False,
+                 GridBoxAlignment->{"Columns" -> {Right, Left}},
+                 GridBoxDividers->None,
+                 GridBoxItemSize->{"Columns" -> {Automatic, Automatic}},
+                 GridBoxSpacings->{"Columns" -> {
+                    Offset[0.27999999999999997`], {
+                    Offset[0.5599999999999999]}, 
+                    Offset[0.27999999999999997`]}, "Rows" -> {
+                    Offset[0.2], {
+                    Offset[0.8]}, 
+                    Offset[0.2]}}], "DialogStyle",
+                StripOnInput->False],
+               DynamicModuleValues:>{}]}
+            },
+            DefaultBaseStyle->"Column",
+            GridBoxAlignment->{"Columns" -> {{Left}}},
+            GridBoxDividers->{"Columns" -> {{False}}, "Rows" -> {{False}}},
+            GridBoxItemSize->{
+             "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+            GridBoxSpacings->{"Columns" -> {
+                Offset[0.27999999999999997`], {
+                 Offset[0.5599999999999999]}, 
+                Offset[0.27999999999999997`]}, "Rows" -> {
+                Offset[0.2], {
+                 Offset[3.6]}, 
+                Offset[0.2]}}],
+           FrameMargins->6], ""},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpener"]], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "UpPointerOpenerHot"]]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, False],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"], False->
+      TagBox[GridBox[{
+         {
+          ItemBox[
+           PaneBox[
+            StyleBox["\<\" Symbol\"\>", "InformationTitleText",
+             StripOnInput->False],
+            FrameMargins->{{4, 0}, {-1, 1}}],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           PaneBox[
+            
+            StyleBox["\<\"use the REST API to get materials data from \
+materialsproject.org.  https://materialsproject.org/docs/api section 4.3.1 \
+for list of available properties. This implementation has limited \
+functionality (2020-09-02), so try out the website or direct API calls \
+instead of this wrapper function via URLBuild, URLExecute, and Association \
+Key Mapping (e.g. <|\\\"a\\\"->b|>[\\\"a\\\"]). You will also need to specify \
+a personal key by updating the myKey value inside the MaterialProperties \
+function and resaving MaterialProperties.nb as MaterialProperties.m in a \
+$Path folder (change filetype to .m in dropdown). I recommend \
+workflow/GetDataFromARESTfulAPI for some basic guidelines on accessing \
+APIs.\\n\\nExample usage:\\n\\tMaterialProperties[\\\"Fe3C\\\"] (*get \
+material properties for \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\"] \
+(*get the spacegroup properties of \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\", \
+\\\"number\\\"] (*get the spacegroup number of \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C*) \
+\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"\\\" ,\\\"\\\" , 0] (*get material \
+properties for all database entries of \\!\\(\\*SubscriptBox[\\(Fe\\), \
+\\(3\\)]\\)C*)\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"\\\" ,\\\"\\\" , 4] \
+(*get material properties for the first 4 database entries of \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C (or all entries, if # entries < \
+4);\\n\\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\", \\\"number\\\", \
+0] (*get a list of possible spacegroup numbers for \
+\\!\\(\\*SubscriptBox[\\(Fe\\), \\(3\\)]\\)C*)\\n\\nGeneral URI format: Get \
+https://www.materialsproject.org/rest/v2/materials/{material id, formula, or \
+chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\\n\"\>", 
+             "InformationUsageText",
+             StripOnInput->False,
+             LineSpacing->{1.5, 1.5, 3.}],
+            FrameMargins->{{10, 10}, {8, 10}}],
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False], 
+          ItemBox["\<\"\"\>",
+           BaseStyle->"InformationUsageSubtitleBackground",
+           StripOnInput->False]},
+         {
+          ItemBox[
+           TagBox[
+            ButtonBox[
+             PaneSelectorBox[{False->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpener"],
+               ImageSizeCache->{10., {3., 7.}}], True->
+              
+              DynamicBox[FEPrivate`FrontEndResource[
+               "FEBitmaps", "DownPointerOpenerHot"],
+               ImageSizeCache->{10., {3., 7.}}]}, Dynamic[
+              System`InformationDump`mouseOver$$]],
+             Alignment->Left,
+             Appearance->{"Default" -> None},
+             
+             ButtonFunction:>FEPrivate`Set[
+              System`InformationDump`open$$, True],
+             Evaluator->Automatic,
+             FrameMargins->{{9, 0}, {0, 0}},
+             ImageMargins->0,
+             ImageSize->Full,
+             Method->"Preemptive"],
+            
+            EventHandlerTag[{
+             "MouseEntered" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, True], 
+              "MouseExited" :> 
+              FEPrivate`Set[System`InformationDump`mouseOver$$, False], 
+              Method -> "Preemptive", PassEventsDown -> Automatic, 
+              PassEventsUp -> True}]],
+           BaseStyle->"InformationTitleBackground",
+           StripOnInput->False], "\[SpanFromLeft]"}
+        },
+        AutoDelete->False,
+        FrameStyle->Directive[
+          GrayLevel[0.8], 
+          Thickness[Tiny]],
+        GridBoxAlignment->{"Columns" -> {Left, Right}, "Rows" -> {{Center}}},
+        GridBoxDividers->{
+         "Columns" -> {{None}}, "Rows" -> {False, {True}, False}},
+        GridBoxItemSize->{
+         "Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}}],
+       "Grid"]}, Dynamic[System`InformationDump`open$$],
+      BaselinePosition->Baseline,
+      FrameMargins->0,
+      ImageSize->Automatic],
+     DynamicModuleValues:>{}],
+    BaseStyle->"InformationGridFrame",
+    StripOnInput->False], "InformationGridPlain",
+   StripOnInput->False],
+  InformationData[
+   Association[
+   "ObjectType" -> "Symbol", "Usage" -> 
+    "use the REST API to get materials data from materialsproject.org.  \
+https://materialsproject.org/docs/api section 4.3.1 for list of available \
+properties. This implementation has limited functionality (2020-09-02), so \
+try out the website or direct API calls instead of this wrapper function via \
+URLBuild, URLExecute, and Association Key Mapping (e.g. <|\"a\"->b|>[\"a\"]). \
+You will also need to specify a personal key by updating the myKey value \
+inside the MaterialProperties function and resaving MaterialProperties.nb as \
+MaterialProperties.m in a $Path folder (change filetype to .m in dropdown). I \
+recommend workflow/GetDataFromARESTfulAPI for some basic guidelines on \
+accessing APIs.\n\nExample usage:\n\tMaterialProperties[\"Fe3C\"] (*get \
+material properties for \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\t\
+MaterialProperties[\"Fe3C\", \"spacegroup\"] (*get the spacegroup properties \
+of \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\"Fe3C\", \
+\"spacegroup\", \"number\"] (*get the spacegroup number of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*) \n\tMaterialProperties[\"Fe3C\", \"\" \
+,\"\" , 0] (*get material properties for all database entries of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\"Fe3C\", \"\" ,\
+\"\" , 4] (*get material properties for the first 4 database entries of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C (or all entries, if # entries < 4);\n\t\
+MaterialProperties[\"Fe3C\", \"spacegroup\", \"number\", 0] (*get a list of \
+possible spacegroup numbers for \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\n\
+General URI format: Get \
+https://www.materialsproject.org/rest/v2/materials/{material id, formula, or \
+chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n", "Documentation" -> 
+    None, "OwnValues" -> None, "UpValues" -> None, "DownValues" -> 
+    Information`InformationValueForm[
+     DownValues, MaterialProperties`MaterialProperties, {
+      MaterialProperties`MaterialProperties[
+         Pattern[Private`formula, 
+          Blank[String]], 
+         Optional[
+          Pattern[Private`property, 
+           Blank[]], ""], 
+         Optional[
+          Pattern[Private`subproperty, 
+           Blank[]], ""], 
+         Optional[
+          Pattern[Private`requestedEntries, 
+           Blank[Integer]], 1]] :> 
+       Module[{Private`urlRoot, Private`myKey, Private`requestURI, 
+          Private`response, Private`maxEntries, Private`numEntries, 
+          Private`propertyKey, Private`subpropertyKey, Private`out}, 
+         Private`urlRoot = 
+          "https://www.materialsproject.org/rest/v2/materials/"; 
+         Private`myKey = "JHlWQRu5mpE4FC72"; 
+         Private`requestURI = 
+          URLBuild[{
+            Private`urlRoot, Private`formula, "vasp", Private`property}, {
+            "API_KEY" -> Private`myKey}]; 
+         Private`response = URLExecute[Private`requestURI, "rawJSON"]; 
+         Private`maxEntries = Length[Private`response]; 
+         If[Private`requestedEntries == 0, 
+           Private`numEntries = Private`maxEntries; Null, 
+           Private`numEntries = 
+            Min[{Private`maxEntries, Private`requestedEntries}]; Null]; 
+         If[Private`property == "", Private`propertyKey = Sequence[]; Null, 
+           Private`propertyKey = Private`property; Null]; 
+         If[Private`subproperty == "", Private`subpropertyKey = Sequence[]; 
+           Null, Private`subpropertyKey = Private`subproperty; Null]; 
+         Private`out = Map[Part[
+             Lookup[Private`response, "response"], #][Private`propertyKey][
+            Private`subpropertyKey]& , 
+            Range[Private`numEntries]]; If[
+           And[Length[Private`out] == 1, Private`requestedEntries == 1], 
+           Part[Private`out, 1], Private`out]]}], "SubValues" -> None, 
+    "DefaultValues" -> None, "NValues" -> None, "FormatValues" -> None, 
+    "Options" -> None, "Attributes" -> {}, "FullName" -> 
+    "MaterialProperties`MaterialProperties"], False]]], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743930941772`*^9},
+ CellLabel->"Out[85]=",ExpressionUUID->"862da7ce-6f2d-4f08-9d5e-2203f289b918"],
+
+Cell[BoxData["62"], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743942051783`*^9},
+ CellLabel->"Out[86]=",ExpressionUUID->"391fc1d3-6824-4c6f-bdc0-00d8f51d037b"],
+
+Cell[BoxData["62"], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743944111757`*^9},
+ CellLabel->"Out[87]=",ExpressionUUID->"6a3a367a-56db-4af3-b29d-ab025ef8d3be"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{"62", ",", "182", ",", "62", ",", "62", ",", "12"}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743946381783`*^9},
+ CellLabel->"Out[88]=",ExpressionUUID->"4ad1d3c8-466d-48fd-9654-66f6c75c3aaa"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+   RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+   RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"Pnma\"\>"}], ",", 
+   RowBox[{"\<\"number\"\>", "\[Rule]", "62"}], ",", 
+   RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"mmm\"\>"}], ",", 
+   RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"orthorhombic\"\>"}], ",", 
+   RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-P 2ac 2n\"\>"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743948171763`*^9},
+ CellLabel->"Out[89]=",ExpressionUUID->"141871f6-33f6-40cd-afe0-f8a9f1b10ee9"],
+
+Cell[BoxData[
+ RowBox[{"\[LeftAssociation]", 
+  RowBox[{
+   RowBox[{"\<\"energy\"\>", "\[Rule]", 
+    RowBox[{"-", "137.65681981`"}]}], ",", 
+   RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+    RowBox[{"-", "8.603551238125`"}]}], ",", 
+   RowBox[{"\<\"volume\"\>", "\[Rule]", "152.23931894937346`"}], ",", 
+   RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+    "0.05511399687500074`"}], ",", 
+   RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}], ",", 
+   RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"Fe\"\>", "\[Rule]", "12.`"}], ",", 
+      RowBox[{"\<\"C\"\>", "\[Rule]", "4.`"}]}], "\[RightAssociation]"}]}], 
+   ",", 
+   RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+   RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+   RowBox[{"\<\"elements\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\<\"Fe\"\>", ",", "\<\"C\"\>"}], "}"}]}], ",", 
+   RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+   RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "0.05511399687500074`"}], ",", 
+   RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+   RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+   RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+      RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+      RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"Pnma\"\>"}], ",", 
+      RowBox[{"\<\"number\"\>", "\[Rule]", "62"}], ",", 
+      RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"mmm\"\>"}], ",", 
+      RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"orthorhombic\"\>"}], 
+      ",", 
+      RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-P 2ac 2n\"\>"}]}], 
+     "\[RightAssociation]"}]}], ",", 
+   RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\<\"mp-920129\"\>", ",", "\<\"mp-919105\"\>", 
+      ",", "\<\"mp-906350\"\>", ",", "\<\"mp-510623\"\>", 
+      ",", "\<\"mp-1189658\"\>", ",", "\<\"mp-1190154\"\>", 
+      ",", "\<\"mp-1440597\"\>"}], "}"}]}], ",", 
+   RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.`"}], ",", 
+   RowBox[{"\<\"density\"\>", "\[Rule]", "7.833525435390946`"}], ",", 
+   RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+   RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{
+     "99010", ",", "99032", ",", "99025", ",", "617701", ",", "99006", ",", 
+      "99009", ",", "99030", ",", "77312", ",", "99012", ",", "43375", ",", 
+      "99019", ",", "99003", ",", "99027", ",", "99022", ",", "43522", ",", 
+      "617704", ",", "99013", ",", "617699", ",", "99024", ",", "160555", ",",
+       "99028", ",", "653949", ",", "99007", ",", "99020", ",", "99031", ",", 
+      "99023", ",", "99021", ",", "99018", ",", "99011", ",", "16593", ",", 
+      "99026", ",", "99004", ",", "187140", ",", "109100", ",", "167126", ",",
+       "99008", ",", "163150", ",", "167667", ",", "99029", ",", "99017", ",",
+       "163149", ",", "167344", ",", "99015", ",", "99014", ",", "64689", ",",
+       "38308", ",", "36346", ",", "99005", ",", "168295", ",", "99002", ",", 
+      "99016"}], "}"}]}], ",", 
+   RowBox[{"\<\"cif\"\>", 
+    "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   4.49084500\\n_cell_length_b   \
+5.03018000\\n_cell_length_c   6.73930700\\n_cell_angle_alpha   \
+90.00000000\\n_cell_angle_beta   90.00000000\\n_cell_angle_gamma   \
+90.00000000\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural  \
+ Fe3C\\n_chemical_formula_sum   'Fe12 C4'\\n_cell_volume   \
+152.23931895\\n_cell_formula_units_Z   4\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.83712000  0.03666100  0.25000000  1\\n  Fe  Fe1  1  0.33712000  \
+0.46333900  0.75000000  1\\n  Fe  Fe2  1  0.66288000  0.53666100  0.25000000  \
+1\\n  Fe  Fe3  1  0.16288000  0.96333900  0.75000000  1\\n  Fe  Fe4  1  \
+0.33210100  0.17737000  0.06837400  1\\n  Fe  Fe5  1  0.83210100  0.32263000  \
+0.93162600  1\\n  Fe  Fe6  1  0.16789900  0.67737000  0.43162600  1\\n  Fe  \
+Fe7  1  0.66789900  0.82263000  0.56837400  1\\n  Fe  Fe8  1  0.66789900  \
+0.82263000  0.93162600  1\\n  Fe  Fe9  1  0.16789900  0.67737000  0.06837400  \
+1\\n  Fe  Fe10  1  0.83210100  0.32263000  0.56837400  1\\n  Fe  Fe11  1  \
+0.33210100  0.17737000  0.43162600  1\\n  C  C12  1  0.43906800  0.87699400  \
+0.25000000  1\\n  C  C13  1  0.93906800  0.62300600  0.75000000  1\\n  C  C14 \
+ 1  0.06093200  0.37699400  0.25000000  1\\n  C  C15  1  0.56093200  \
+0.12300600  0.75000000  1\\n\"\>"}], ",", 
+   RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "5.60127705`"}], ",", 
+   RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-510623\"\>"}], ",", 
+   RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+   RowBox[{"\<\"tags\"\>", "\[Rule]", 
+    RowBox[{"{", 
+     RowBox[{"\<\"Iron carbide\"\>", ",", "\<\"Iron carbide (3/1)\"\>", 
+      ",", "\<\"High pressure experimental phase\"\>", 
+      ",", "\<\"Cohenite\"\>", ",", "\<\"Iron carbide (3/1) - theta\"\>", 
+      ",", "\<\"Cementite\"\>"}], "}"}]}], ",", 
+   RowBox[{"\<\"elasticity\"\>", "\[Rule]", 
+    RowBox[{"\[LeftAssociation]", 
+     RowBox[{
+      RowBox[{"\<\"G_Reuss\"\>", "\[Rule]", "65.`"}], ",", 
+      RowBox[{"\<\"G_VRH\"\>", "\[Rule]", "81.`"}], ",", 
+      RowBox[{"\<\"G_Voigt\"\>", "\[Rule]", "97.`"}], ",", 
+      RowBox[{"\<\"G_Voigt_Reuss_Hill\"\>", "\[Rule]", "81.`"}], ",", 
+      RowBox[{"\<\"K_Reuss\"\>", "\[Rule]", "223.`"}], ",", 
+      RowBox[{"\<\"K_VRH\"\>", "\[Rule]", "223.`"}], ",", 
+      RowBox[{"\<\"K_Voigt\"\>", "\[Rule]", "224.`"}], ",", 
+      RowBox[{"\<\"K_Voigt_Reuss_Hill\"\>", "\[Rule]", "223.`"}], ",", 
+      RowBox[{"\<\"elastic_anisotropy\"\>", "\[Rule]", "2.5`"}], ",", 
+      RowBox[{"\<\"elastic_tensor\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "393.`", ",", "153.`", ",", "160.`", ",", "0.`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "153.`", ",", "347.`", ",", "161.`", ",", "0.`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "160.`", ",", "161.`", ",", "325.`", ",", "0.`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "24.`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "133.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+           "131.`"}], "}"}]}], "}"}]}], ",", 
+      RowBox[{"\<\"homogeneous_poisson\"\>", "\[Rule]", "0.34`"}], ",", 
+      RowBox[{"\<\"poisson_ratio\"\>", "\[Rule]", "0.34`"}], ",", 
+      RowBox[{"\<\"universal_anisotropy\"\>", "\[Rule]", "2.5`"}], ",", 
+      RowBox[{"\<\"elastic_tensor_original\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "324.8605537115585`", ",", "158.57430987085723`", ",", 
+           "160.89201617833382`", ",", "0.`", ",", "0.`", ",", "0.`"}], "}"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "161.19353018087494`", ",", "392.91853723907127`", ",", 
+           "152.45894808898046`", ",", "0.`", ",", "0.`", ",", "0.`"}], "}"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "161.95706700565339`", ",", "154.21543149175375`", ",", 
+           "346.67640121369044`", ",", "0.`", ",", "0.`", ",", "0.`"}], "}"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.0003499056002501651`", ",", "0.0016304641787363984`", ",", 
+           "0.0015359650155965905`", ",", "130.98309857936533`", ",", "0.`", 
+           ",", "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.02444633842220153`", ",", "0.024872652425614507`", ",", 
+           "0.03890727194316901`", ",", "0.`", ",", "24.094996583179007`", 
+           ",", "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.0008013648780410783`"}], ",", 
+           "0.00015501435619849494`", ",", "0.000053750551352907576`", ",", 
+           "0.`", ",", "0.`", ",", "132.7363186152394`"}], "}"}]}], "}"}]}], 
+      ",", 
+      RowBox[{"\<\"compliance_tensor\"\>", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"3.4`", ",", 
+           RowBox[{"-", "0.9`"}], ",", 
+           RowBox[{"-", "1.2`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], "}"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.9`"}], ",", "4.`", ",", 
+           RowBox[{"-", "1.5`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], "}"}],
+          ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "1.2`"}], ",", 
+           RowBox[{"-", "1.5`"}], ",", "4.4`", ",", "0.`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "41.5`", ",", "0.`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "7.5`", ",", 
+           "0.`"}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{
+          "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+           "7.6`"}], "}"}]}], "}"}]}], ",", 
+      RowBox[{"\<\"warnings\"\>", "\[Rule]", 
+       RowBox[{"{", "}"}]}], ",", 
+      RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}]}], 
+     "\[RightAssociation]"}]}], ",", 
+   RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+   RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+   RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe12C4\"\>"}]}], 
+  "\[RightAssociation]"}]], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.808074395048175*^9},
+ CellLabel->"Out[90]=",ExpressionUUID->"01de505e-7fca-4920-ab1c-c0b46e037d4f"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"energy\"\>", "\[Rule]", 
+      RowBox[{"-", "137.65681981`"}]}], ",", 
+     RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+      RowBox[{"-", "8.603551238125`"}]}], ",", 
+     RowBox[{"\<\"volume\"\>", "\[Rule]", "152.23931894937346`"}], ",", 
+     RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+      "0.05511399687500074`"}], ",", 
+     RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}], ",", 
+     RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"Fe\"\>", "\[Rule]", "12.`"}], ",", 
+        RowBox[{"\<\"C\"\>", "\[Rule]", "4.`"}]}], "\[RightAssociation]"}]}], 
+     ",", 
+     RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+     RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+     RowBox[{"\<\"elements\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Fe\"\>", ",", "\<\"C\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "0.05511399687500074`"}], ",", 
+     RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+     RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+        RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+        RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"Pnma\"\>"}], ",", 
+        RowBox[{"\<\"number\"\>", "\[Rule]", "62"}], ",", 
+        RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"mmm\"\>"}], ",", 
+        RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"orthorhombic\"\>"}],
+         ",", 
+        RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-P 2ac 2n\"\>"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"mp-920129\"\>", ",", "\<\"mp-919105\"\>", 
+        ",", "\<\"mp-906350\"\>", ",", "\<\"mp-510623\"\>", 
+        ",", "\<\"mp-1189658\"\>", ",", "\<\"mp-1190154\"\>", 
+        ",", "\<\"mp-1440597\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.`"}], ",", 
+     RowBox[{"\<\"density\"\>", "\[Rule]", "7.833525435390946`"}], ",", 
+     RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{
+       "99010", ",", "99032", ",", "99025", ",", "617701", ",", "99006", ",", 
+        "99009", ",", "99030", ",", "77312", ",", "99012", ",", "43375", ",", 
+        "99019", ",", "99003", ",", "99027", ",", "99022", ",", "43522", ",", 
+        "617704", ",", "99013", ",", "617699", ",", "99024", ",", "160555", 
+        ",", "99028", ",", "653949", ",", "99007", ",", "99020", ",", "99031",
+         ",", "99023", ",", "99021", ",", "99018", ",", "99011", ",", "16593",
+         ",", "99026", ",", "99004", ",", "187140", ",", "109100", ",", 
+        "167126", ",", "99008", ",", "163150", ",", "167667", ",", "99029", 
+        ",", "99017", ",", "163149", ",", "167344", ",", "99015", ",", 
+        "99014", ",", "64689", ",", "38308", ",", "36346", ",", "99005", ",", 
+        "168295", ",", "99002", ",", "99016"}], "}"}]}], ",", 
+     RowBox[{"\<\"cif\"\>", 
+      "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   4.49084500\\n_cell_length_b   \
+5.03018000\\n_cell_length_c   6.73930700\\n_cell_angle_alpha   \
+90.00000000\\n_cell_angle_beta   90.00000000\\n_cell_angle_gamma   \
+90.00000000\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural  \
+ Fe3C\\n_chemical_formula_sum   'Fe12 C4'\\n_cell_volume   \
+152.23931895\\n_cell_formula_units_Z   4\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.83712000  0.03666100  0.25000000  1\\n  Fe  Fe1  1  0.33712000  \
+0.46333900  0.75000000  1\\n  Fe  Fe2  1  0.66288000  0.53666100  0.25000000  \
+1\\n  Fe  Fe3  1  0.16288000  0.96333900  0.75000000  1\\n  Fe  Fe4  1  \
+0.33210100  0.17737000  0.06837400  1\\n  Fe  Fe5  1  0.83210100  0.32263000  \
+0.93162600  1\\n  Fe  Fe6  1  0.16789900  0.67737000  0.43162600  1\\n  Fe  \
+Fe7  1  0.66789900  0.82263000  0.56837400  1\\n  Fe  Fe8  1  0.66789900  \
+0.82263000  0.93162600  1\\n  Fe  Fe9  1  0.16789900  0.67737000  0.06837400  \
+1\\n  Fe  Fe10  1  0.83210100  0.32263000  0.56837400  1\\n  Fe  Fe11  1  \
+0.33210100  0.17737000  0.43162600  1\\n  C  C12  1  0.43906800  0.87699400  \
+0.25000000  1\\n  C  C13  1  0.93906800  0.62300600  0.75000000  1\\n  C  C14 \
+ 1  0.06093200  0.37699400  0.25000000  1\\n  C  C15  1  0.56093200  \
+0.12300600  0.75000000  1\\n\"\>"}], ",", 
+     RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "5.60127705`"}], ",", 
+     RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-510623\"\>"}], ",", 
+     RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+     RowBox[{"\<\"tags\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Iron carbide\"\>", ",", "\<\"Iron carbide (3/1)\"\>", 
+        ",", "\<\"High pressure experimental phase\"\>", 
+        ",", "\<\"Cohenite\"\>", ",", "\<\"Iron carbide (3/1) - theta\"\>", 
+        ",", "\<\"Cementite\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"elasticity\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"G_Reuss\"\>", "\[Rule]", "65.`"}], ",", 
+        RowBox[{"\<\"G_VRH\"\>", "\[Rule]", "81.`"}], ",", 
+        RowBox[{"\<\"G_Voigt\"\>", "\[Rule]", "97.`"}], ",", 
+        RowBox[{"\<\"G_Voigt_Reuss_Hill\"\>", "\[Rule]", "81.`"}], ",", 
+        RowBox[{"\<\"K_Reuss\"\>", "\[Rule]", "223.`"}], ",", 
+        RowBox[{"\<\"K_VRH\"\>", "\[Rule]", "223.`"}], ",", 
+        RowBox[{"\<\"K_Voigt\"\>", "\[Rule]", "224.`"}], ",", 
+        RowBox[{"\<\"K_Voigt_Reuss_Hill\"\>", "\[Rule]", "223.`"}], ",", 
+        RowBox[{"\<\"elastic_anisotropy\"\>", "\[Rule]", "2.5`"}], ",", 
+        RowBox[{"\<\"elastic_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "393.`", ",", "153.`", ",", "160.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "153.`", ",", "347.`", ",", "161.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "160.`", ",", "161.`", ",", "325.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "24.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "133.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "131.`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"homogeneous_poisson\"\>", "\[Rule]", "0.34`"}], ",", 
+        RowBox[{"\<\"poisson_ratio\"\>", "\[Rule]", "0.34`"}], ",", 
+        RowBox[{"\<\"universal_anisotropy\"\>", "\[Rule]", "2.5`"}], ",", 
+        RowBox[{"\<\"elastic_tensor_original\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "324.8605537115585`", ",", "158.57430987085723`", ",", 
+             "160.89201617833382`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "161.19353018087494`", ",", "392.91853723907127`", ",", 
+             "152.45894808898046`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "161.95706700565339`", ",", "154.21543149175375`", ",", 
+             "346.67640121369044`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.0003499056002501651`", ",", "0.0016304641787363984`", ",", 
+             "0.0015359650155965905`", ",", "130.98309857936533`", ",", "0.`",
+              ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.02444633842220153`", ",", "0.024872652425614507`", ",", 
+             "0.03890727194316901`", ",", "0.`", ",", "24.094996583179007`", 
+             ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.0008013648780410783`"}], ",", 
+             "0.00015501435619849494`", ",", "0.000053750551352907576`", ",", 
+             "0.`", ",", "0.`", ",", "132.7363186152394`"}], "}"}]}], "}"}]}],
+         ",", 
+        RowBox[{"\<\"compliance_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"3.4`", ",", 
+             RowBox[{"-", "0.9`"}], ",", 
+             RowBox[{"-", "1.2`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.9`"}], ",", "4.`", ",", 
+             RowBox[{"-", "1.5`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1.2`"}], ",", 
+             RowBox[{"-", "1.5`"}], ",", "4.4`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "41.5`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "7.5`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "7.6`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"warnings\"\>", "\[Rule]", 
+         RowBox[{"{", "}"}]}], ",", 
+        RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe12C4\"\>"}]}], 
+    "\[RightAssociation]"}], ",", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"energy\"\>", "\[Rule]", 
+      RowBox[{"-", "68.82779839`"}]}], ",", 
+     RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+      RowBox[{"-", "8.60347479875`"}]}], ",", 
+     RowBox[{"\<\"volume\"\>", "\[Rule]", "81.30838104130281`"}], ",", 
+     RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+      "0.055190436250001085`"}], ",", 
+     RowBox[{"\<\"nsites\"\>", "\[Rule]", "8"}], ",", 
+     RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"Fe\"\>", "\[Rule]", "6.`"}], ",", 
+        RowBox[{"\<\"C\"\>", "\[Rule]", "2.`"}]}], "\[RightAssociation]"}]}], 
+     ",", 
+     RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+     RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+     RowBox[{"\<\"elements\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Fe\"\>", ",", "\<\"C\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "0.055190436250001085`"}], 
+     ",", 
+     RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+     RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+        RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+        RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"P6_322\"\>"}], ",", 
+        RowBox[{"\<\"number\"\>", "\[Rule]", "182"}], ",", 
+        RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"622\"\>"}], ",", 
+        RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"hexagonal\"\>"}], 
+        ",", 
+        RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"P 6c 2c\"\>"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"mp-919103\"\>", ",", "\<\"mp-920127\"\>", 
+        ",", "\<\"mp-906349\"\>", ",", "\<\"mp-13154\"\>", 
+        ",", "\<\"mp-1079658\"\>", ",", "\<\"mp-1300475\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.`"}], ",", 
+     RowBox[{"\<\"density\"\>", "\[Rule]", "7.333626386256006`"}], ",", 
+     RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"184959", ",", "42542", ",", "163151"}], "}"}]}], ",", 
+     RowBox[{"\<\"cif\"\>", 
+      "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   4.66170975\\n_cell_length_b   \
+4.66170975\\n_cell_length_c   4.32030300\\n_cell_angle_alpha   \
+90.00000000\\n_cell_angle_beta   90.00000000\\n_cell_angle_gamma   \
+119.99999650\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural \
+  Fe3C\\n_chemical_formula_sum   'Fe6 C2'\\n_cell_volume   \
+81.30838104\\n_cell_formula_units_Z   2\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.00000000  0.67889400  0.50000000  1\\n  Fe  Fe1  1  0.00000000  \
+0.32110600  0.00000000  1\\n  Fe  Fe2  1  0.67889400  0.67889400  0.00000000  \
+1\\n  Fe  Fe3  1  0.67889400  0.00000000  0.50000000  1\\n  Fe  Fe4  1  \
+0.32110600  0.32110600  0.50000000  1\\n  Fe  Fe5  1  0.32110600  0.00000000  \
+0.00000000  1\\n  C  C6  1  0.66666700  0.33333300  0.75000000  1\\n  C  C7  \
+1  0.33333300  0.66666700  0.25000000  1\\n\"\>"}], ",", 
+     RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "5.9414959`"}], ",", 
+     RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-13154\"\>"}], ",", 
+     RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+     RowBox[{"\<\"tags\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Iron carbide (3/1)\"\>", ",", "\<\"Bainite (upper)\"\>"}],
+        "}"}]}], ",", 
+     RowBox[{"\<\"elasticity\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"G_Reuss\"\>", "\[Rule]", "89.`"}], ",", 
+        RowBox[{"\<\"G_VRH\"\>", "\[Rule]", "91.`"}], ",", 
+        RowBox[{"\<\"G_Voigt\"\>", "\[Rule]", "92.`"}], ",", 
+        RowBox[{"\<\"G_Voigt_Reuss_Hill\"\>", "\[Rule]", "91.`"}], ",", 
+        RowBox[{"\<\"K_Reuss\"\>", "\[Rule]", "198.`"}], ",", 
+        RowBox[{"\<\"K_VRH\"\>", "\[Rule]", "198.`"}], ",", 
+        RowBox[{"\<\"K_Voigt\"\>", "\[Rule]", "198.`"}], ",", 
+        RowBox[{"\<\"K_Voigt_Reuss_Hill\"\>", "\[Rule]", "198.`"}], ",", 
+        RowBox[{"\<\"elastic_anisotropy\"\>", "\[Rule]", "0.16`"}], ",", 
+        RowBox[{"\<\"elastic_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "300.`", ",", "152.`", ",", "138.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"152.`", ",", "300.`", ",", "138.`", ",", 
+             RowBox[{"-", "1.`"}], ",", "0.`", ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"138.`", ",", "138.`", ",", "324.`", ",", 
+             RowBox[{"-", "1.`"}], ",", 
+             RowBox[{"-", "1.`"}], ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0.`", ",", 
+             RowBox[{"-", "1.`"}], ",", 
+             RowBox[{"-", "1.`"}], ",", "110.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0.`", ",", "0.`", ",", 
+             RowBox[{"-", "1.`"}], ",", "0.`", ",", "110.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "74.`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"homogeneous_poisson\"\>", "\[Rule]", "0.3`"}], ",", 
+        RowBox[{"\<\"poisson_ratio\"\>", "\[Rule]", "0.3`"}], ",", 
+        RowBox[{"\<\"universal_anisotropy\"\>", "\[Rule]", "0.16`"}], ",", 
+        RowBox[{"\<\"elastic_tensor_original\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "299.9488980609982`", ",", "151.6803894851992`", ",", 
+             "139.20630002804145`", ",", "0.`", ",", "0.`", ",", 
+             RowBox[{"-", "0.00003588100318845202`"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "151.93244218639708`", ",", "300.2835595077467`", ",", 
+             "139.05627864019368`", ",", "0.`", ",", "0.`", ",", 
+             RowBox[{"-", "0.00007447268288375413`"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "137.57116124948072`", ",", "137.57119178494858`", ",", 
+             "324.4745406984829`", ",", "0.`", ",", "0.`", ",", 
+             RowBox[{"-", "0.00003411497315046436`"}]}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.9915247066771024`"}], ",", 
+             RowBox[{"-", "2.4328423578704412`"}], ",", 
+             RowBox[{"-", "5.610612052631279`"}], ",", "110.46267824075862`", 
+             ",", 
+             RowBox[{"-", "0.000027373300188842486`"}], ",", 
+             "6.066649275151925`*^-7"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.0005954574777364866`"}], ",", 
+             RowBox[{"-", "0.0007563210301816371`"}], ",", 
+             RowBox[{"-", "0.00001776669086491102`"}], ",", "0.`", ",", 
+             "110.12655654626899`", ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"0.0002639767144046635`", ",", 
+             RowBox[{"-", "0.007801680153477205`"}], ",", 
+             RowBox[{"-", "0.011024916736738936`"}], ",", "0.`", ",", "0.`", 
+             ",", "74.29587910005726`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"compliance_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"4.9`", ",", 
+             RowBox[{"-", "1.9`"}], ",", 
+             RowBox[{"-", "1.3`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1.9`"}], ",", "4.9`", ",", 
+             RowBox[{"-", "1.3`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1.3`"}], ",", 
+             RowBox[{"-", "1.3`"}], ",", "4.2`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "9.1`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "9.1`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "13.5`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"warnings\"\>", "\[Rule]", 
+         RowBox[{"{", "}"}]}], ",", 
+        RowBox[{"\<\"nsites\"\>", "\[Rule]", "8"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe6C2\"\>"}]}], 
+    "\[RightAssociation]"}], ",", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"energy\"\>", "\[Rule]", 
+      RowBox[{"-", "69.33154235`"}]}], ",", 
+     RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+      RowBox[{"-", "4.333221396875`"}]}], ",", 
+     RowBox[{"\<\"volume\"\>", "\[Rule]", "3476.5150670327484`"}], ",", 
+     RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+      "4.325443838125`"}], ",", 
+     RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}], ",", 
+     RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"Fe\"\>", "\[Rule]", "12.`"}], ",", 
+        RowBox[{"\<\"C\"\>", "\[Rule]", "4.`"}]}], "\[RightAssociation]"}]}], 
+     ",", 
+     RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+     RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+     RowBox[{"\<\"elements\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"C\"\>", ",", "\<\"Fe\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "4.325443838125`"}], ",", 
+     RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+     RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+        RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+        RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"Pnma\"\>"}], ",", 
+        RowBox[{"\<\"number\"\>", "\[Rule]", "62"}], ",", 
+        RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"mmm\"\>"}], ",", 
+        RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"orthorhombic\"\>"}],
+         ",", 
+        RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-P 2ac 2n\"\>"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"mp-1188724\"\>", ",", "\<\"mp-1328078\"\>"}], "}"}]}], 
+     ",", 
+     RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.1593`"}], ",", 
+     RowBox[{"\<\"density\"\>", "\[Rule]", "0.3430362170914986`"}], ",", 
+     RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+      RowBox[{"{", "76827", "}"}]}], ",", 
+     RowBox[{"\<\"cif\"\>", 
+      "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   11.87367900\\n_cell_length_b   \
+14.26661600\\n_cell_length_c   20.52285800\\n_cell_angle_alpha   \
+90.00000000\\n_cell_angle_beta   90.00000000\\n_cell_angle_gamma   \
+90.00000000\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural  \
+ Fe3C\\n_chemical_formula_sum   'Fe12 C4'\\n_cell_volume   \
+3476.51506703\\n_cell_formula_units_Z   4\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.16152700  0.66905000  0.06490300  1\\n  Fe  Fe1  1  0.33847300  \
+0.16905000  0.43509700  1\\n  Fe  Fe2  1  0.83847300  0.33095000  0.56490300  \
+1\\n  Fe  Fe3  1  0.66152700  0.83095000  0.93509700  1\\n  Fe  Fe4  1  \
+0.83847300  0.33095000  0.93509700  1\\n  Fe  Fe5  1  0.66152700  0.83095000  \
+0.56490300  1\\n  Fe  Fe6  1  0.16152700  0.66905000  0.43509700  1\\n  Fe  \
+Fe7  1  0.33847300  0.16905000  0.06490300  1\\n  Fe  Fe8  1  0.65421000  \
+0.52569100  0.25000000  1\\n  Fe  Fe9  1  0.84579000  0.02569100  0.25000000  \
+1\\n  Fe  Fe10  1  0.34579000  0.47430900  0.75000000  1\\n  Fe  Fe11  1  \
+0.15421000  0.97430900  0.75000000  1\\n  C  C12  1  0.52460800  0.50453200  \
+0.25000000  1\\n  C  C13  1  0.97539200  0.00453200  0.25000000  1\\n  C  C14 \
+ 1  0.47539200  0.49546800  0.75000000  1\\n  C  C15  1  0.02460800  \
+0.99546800  0.75000000  1\\n\"\>"}], ",", 
+     RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "10.`"}], ",", 
+     RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-1188724\"\>"}], ",", 
+     RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+     RowBox[{"\<\"tags\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Iron carbide (3/1)\"\>", ",", "\<\"Cohenite\"\>"}], 
+       "}"}]}], ",", 
+     RowBox[{"\<\"elasticity\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe12C4\"\>"}]}], 
+    "\[RightAssociation]"}], ",", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"energy\"\>", "\[Rule]", 
+      RowBox[{"-", "133.63532199`"}]}], ",", 
+     RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+      RowBox[{"-", "8.352207624375`"}]}], ",", 
+     RowBox[{"\<\"volume\"\>", "\[Rule]", "165.51421076671423`"}], ",", 
+     RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+      "0.3064576106250012`"}], ",", 
+     RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}], ",", 
+     RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"Fe\"\>", "\[Rule]", "12.`"}], ",", 
+        RowBox[{"\<\"C\"\>", "\[Rule]", "4.`"}]}], "\[RightAssociation]"}]}], 
+     ",", 
+     RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+     RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+     RowBox[{"\<\"elements\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Fe\"\>", ",", "\<\"C\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "0.3064576106250012`"}], ",", 
+     RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+     RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+        RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+        RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"Pnma\"\>"}], ",", 
+        RowBox[{"\<\"number\"\>", "\[Rule]", "62"}], ",", 
+        RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"mmm\"\>"}], ",", 
+        RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"orthorhombic\"\>"}],
+         ",", 
+        RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-P 2ac 2n\"\>"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"mp-613523\"\>", ",", "\<\"mp-922096\"\>", 
+        ",", "\<\"mp-907571\"\>", ",", "\<\"mp-922194\"\>", 
+        ",", "\<\"mp-1437329\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.`"}], ",", 
+     RowBox[{"\<\"density\"\>", "\[Rule]", "7.20524583195695`"}], ",", 
+     RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+      RowBox[{"{", "30256", "}"}]}], ",", 
+     RowBox[{"\<\"cif\"\>", 
+      "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   4.65716400\\n_cell_length_b   \
+5.04730000\\n_cell_length_c   7.04132900\\n_cell_angle_alpha   \
+90.00000000\\n_cell_angle_beta   90.00000000\\n_cell_angle_gamma   \
+90.00000000\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural  \
+ Fe3C\\n_chemical_formula_sum   'Fe12 C4'\\n_cell_volume   \
+165.51421077\\n_cell_formula_units_Z   4\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.34729400  0.16863600  0.42247800  1\\n  Fe  Fe1  1  0.15270600  \
+0.66863600  0.07752200  1\\n  Fe  Fe2  1  0.84729400  0.33136400  0.92247800  \
+1\\n  Fe  Fe3  1  0.33966400  0.45020900  0.75000000  1\\n  Fe  Fe4  1  \
+0.15270600  0.66863600  0.42247800  1\\n  Fe  Fe5  1  0.34729400  0.16863600  \
+0.07752200  1\\n  Fe  Fe6  1  0.16033600  0.95020900  0.75000000  1\\n  Fe  \
+Fe7  1  0.65270600  0.83136400  0.92247800  1\\n  Fe  Fe8  1  0.84729400  \
+0.33136400  0.57752200  1\\n  Fe  Fe9  1  0.66033600  0.54979100  0.25000000  \
+1\\n  Fe  Fe10  1  0.65270600  0.83136400  0.57752200  1\\n  Fe  Fe11  1  \
+0.83966400  0.04979100  0.25000000  1\\n  C  C12  1  0.00000000  0.00000000  \
+0.50000000  1\\n  C  C13  1  0.50000000  0.50000000  0.50000000  1\\n  C  C14 \
+ 1  0.50000000  0.50000000  0.00000000  1\\n  C  C15  1  0.00000000  \
+0.00000000  0.00000000  1\\n\"\>"}], ",", 
+     RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "0.005577825`"}], ",", 
+     RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-613523\"\>"}], ",", 
+     RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+     RowBox[{"\<\"tags\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Iron carbide (3/1)\"\>", ",", "\<\"Cohenite\"\>"}], 
+       "}"}]}], ",", 
+     RowBox[{"\<\"elasticity\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"G_Reuss\"\>", "\[Rule]", "64.`"}], ",", 
+        RowBox[{"\<\"G_VRH\"\>", "\[Rule]", "69.`"}], ",", 
+        RowBox[{"\<\"G_Voigt\"\>", "\[Rule]", "75.`"}], ",", 
+        RowBox[{"\<\"G_Voigt_Reuss_Hill\"\>", "\[Rule]", "69.`"}], ",", 
+        RowBox[{"\<\"K_Reuss\"\>", "\[Rule]", "180.`"}], ",", 
+        RowBox[{"\<\"K_VRH\"\>", "\[Rule]", "180.`"}], ",", 
+        RowBox[{"\<\"K_Voigt\"\>", "\[Rule]", "180.`"}], ",", 
+        RowBox[{"\<\"K_Voigt_Reuss_Hill\"\>", "\[Rule]", "180.`"}], ",", 
+        RowBox[{"\<\"elastic_anisotropy\"\>", "\[Rule]", "0.83`"}], ",", 
+        RowBox[{"\<\"elastic_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "274.`", ",", "116.`", ",", "147.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "116.`", ",", "325.`", ",", "99.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "147.`", ",", "99.`", ",", "299.`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "82.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "79.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "34.`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"homogeneous_poisson\"\>", "\[Rule]", "0.33`"}], ",", 
+        RowBox[{"\<\"poisson_ratio\"\>", "\[Rule]", "0.33`"}], ",", 
+        RowBox[{"\<\"universal_anisotropy\"\>", "\[Rule]", "0.83`"}], ",", 
+        RowBox[{"\<\"elastic_tensor_original\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{
+            "299.1220912591458`", ",", "146.2566358127379`", ",", 
+             "100.07288213314196`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "147.5237871861766`", ",", "273.51018102505105`", ",", 
+             "118.56241989974926`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "98.49403717734567`", ",", "113.91424371566852`", ",", 
+             "325.1686186048002`", ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.00009783677056862024`"}], ",", 
+             RowBox[{"-", "0.000020120021367573245`"}], ",", 
+             RowBox[{"-", "0.00011958679366721409`"}], ",", 
+             "33.950967042412636`", ",", "0.`", ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "0.0019491760163035292`"}], ",", 
+             RowBox[{"-", "0.0015309395556974445`"}], ",", 
+             RowBox[{"-", "0.00161778940468105`"}], ",", "0.`", ",", 
+             "81.50838108642458`", ",", "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.0002355072378927954`", ",", "0.00038978771445742465`", ",", 
+             RowBox[{"-", "0.0003157177808796833`"}], ",", "0.`", ",", "0.`", 
+             ",", "79.24833454045773`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"compliance_tensor\"\>", "\[Rule]", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"5.4`", ",", 
+             RowBox[{"-", "1.2`"}], ",", 
+             RowBox[{"-", "2.2`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "1.2`"}], ",", "3.7`", ",", 
+             RowBox[{"-", "0.6`"}], ",", "0.`", ",", "0.`", ",", "0.`"}], 
+            "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+             RowBox[{"-", "2.2`"}], ",", 
+             RowBox[{"-", "0.6`"}], ",", "4.6`", ",", "0.`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "12.3`", ",", "0.`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "12.6`", ",", 
+             "0.`"}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{
+            "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", "0.`", ",", 
+             "29.5`"}], "}"}]}], "}"}]}], ",", 
+        RowBox[{"\<\"warnings\"\>", "\[Rule]", 
+         RowBox[{"{", "}"}]}], ",", 
+        RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe12C4\"\>"}]}], 
+    "\[RightAssociation]"}], ",", 
+   RowBox[{"\[LeftAssociation]", 
+    RowBox[{
+     RowBox[{"\<\"energy\"\>", "\[Rule]", 
+      RowBox[{"-", "134.64277693`"}]}], ",", 
+     RowBox[{"\<\"energy_per_atom\"\>", "\[Rule]", 
+      RowBox[{"-", "8.415173558125`"}]}], ",", 
+     RowBox[{"\<\"volume\"\>", "\[Rule]", "152.37950606173197`"}], ",", 
+     RowBox[{"\<\"formation_energy_per_atom\"\>", "\[Rule]", 
+      "0.24349167687500106`"}], ",", 
+     RowBox[{"\<\"nsites\"\>", "\[Rule]", "16"}], ",", 
+     RowBox[{"\<\"unit_cell_formula\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"Fe\"\>", "\[Rule]", "12.`"}], ",", 
+        RowBox[{"\<\"C\"\>", "\[Rule]", "4.`"}]}], "\[RightAssociation]"}]}], 
+     ",", 
+     RowBox[{"\<\"pretty_formula\"\>", "\[Rule]", "\<\"Fe3C\"\>"}], ",", 
+     RowBox[{"\<\"is_hubbard\"\>", "\[Rule]", "False"}], ",", 
+     RowBox[{"\<\"elements\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"C\"\>", ",", "\<\"Fe\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"nelements\"\>", "\[Rule]", "2"}], ",", 
+     RowBox[{"\<\"e_above_hull\"\>", "\[Rule]", "0.24349167687500106`"}], ",", 
+     RowBox[{"\<\"hubbards\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"is_compatible\"\>", "\[Rule]", "True"}], ",", 
+     RowBox[{"\<\"spacegroup\"\>", "\[Rule]", 
+      RowBox[{"\[LeftAssociation]", 
+       RowBox[{
+        RowBox[{"\<\"symprec\"\>", "\[Rule]", "0.1`"}], ",", 
+        RowBox[{"\<\"source\"\>", "\[Rule]", "\<\"spglib\"\>"}], ",", 
+        RowBox[{"\<\"symbol\"\>", "\[Rule]", "\<\"C2/m\"\>"}], ",", 
+        RowBox[{"\<\"number\"\>", "\[Rule]", "12"}], ",", 
+        RowBox[{"\<\"point_group\"\>", "\[Rule]", "\<\"2/m\"\>"}], ",", 
+        RowBox[{"\<\"crystal_system\"\>", "\[Rule]", "\<\"monoclinic\"\>"}], 
+        ",", 
+        RowBox[{"\<\"hall\"\>", "\[Rule]", "\<\"-C 2y\"\>"}]}], 
+       "\[RightAssociation]"}]}], ",", 
+     RowBox[{"\<\"task_ids\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"mp-1205444\"\>", ",", "\<\"mp-1407775\"\>"}], "}"}]}], 
+     ",", 
+     RowBox[{"\<\"band_gap\"\>", "\[Rule]", "0.`"}], ",", 
+     RowBox[{"\<\"density\"\>", "\[Rule]", "7.826318696514069`"}], ",", 
+     RowBox[{"\<\"icsd_id\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"icsd_ids\"\>", "\[Rule]", 
+      RowBox[{"{", "187141", "}"}]}], ",", 
+     RowBox[{"\<\"cif\"\>", 
+      "\[Rule]", "\<\"# generated using \
+pymatgen\\ndata_Fe3C\\n_symmetry_space_group_name_H-M   'P \
+1'\\n_cell_length_a   4.25997215\\n_cell_length_b   \
+4.25997215\\n_cell_length_c   14.59244163\\n_cell_angle_alpha   \
+77.31348231\\n_cell_angle_beta   77.31348231\\n_cell_angle_gamma   \
+36.25844611\\n_symmetry_Int_Tables_number   1\\n_chemical_formula_structural  \
+ Fe3C\\n_chemical_formula_sum   'Fe12 C4'\\n_cell_volume   \
+152.37950606\\n_cell_formula_units_Z   4\\nloop_\\n \
+_symmetry_equiv_pos_site_id\\n _symmetry_equiv_pos_as_xyz\\n  1  'x, y, \
+z'\\nloop_\\n _atom_site_type_symbol\\n _atom_site_label\\n \
+_atom_site_symmetry_multiplicity\\n _atom_site_fract_x\\n \
+_atom_site_fract_y\\n _atom_site_fract_z\\n _atom_site_occupancy\\n  Fe  Fe0  \
+1  0.73650200  0.73650200  0.78499200  1\\n  Fe  Fe1  1  0.26349800  \
+0.26349800  0.21500800  1\\n  Fe  Fe2  1  0.04052400  0.04052400  0.70717800  \
+1\\n  Fe  Fe3  1  0.95947600  0.95947600  0.29282200  1\\n  Fe  Fe4  1  \
+0.11943800  0.11943800  0.53330300  1\\n  Fe  Fe5  1  0.88056200  0.88056200  \
+0.46669700  1\\n  Fe  Fe6  1  0.35215700  0.35215700  0.62410100  1\\n  Fe  \
+Fe7  1  0.64784300  0.64784300  0.37589900  1\\n  Fe  Fe8  1  0.96154900  \
+0.96154900  0.87917600  1\\n  Fe  Fe9  1  0.03845100  0.03845100  0.12082400  \
+1\\n  Fe  Fe10  1  0.65078900  0.65078900  0.96505100  1\\n  Fe  Fe11  1  \
+0.34921100  0.34921100  0.03494900  1\\n  C  C12  1  0.27466100  0.27466100  \
+0.87984700  1\\n  C  C13  1  0.72533900  0.72533900  0.12015300  1\\n  C  C14 \
+ 1  0.66697800  0.66697800  0.62499500  1\\n  C  C15  1  0.33302200  \
+0.33302200  0.37500500  1\\n\"\>"}], ",", 
+     RowBox[{"\<\"total_magnetization\"\>", "\[Rule]", "0.002589725`"}], ",", 
+     RowBox[{"\<\"material_id\"\>", "\[Rule]", "\<\"mp-1205444\"\>"}], ",", 
+     RowBox[{"\<\"oxide_type\"\>", "\[Rule]", "\<\"None\"\>"}], ",", 
+     RowBox[{"\<\"tags\"\>", "\[Rule]", 
+      RowBox[{"{", 
+       RowBox[{"\<\"Iron carbide (3/1)\"\>", 
+        ",", "\<\"High pressure experimental phase\"\>"}], "}"}]}], ",", 
+     RowBox[{"\<\"elasticity\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"piezo\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"diel\"\>", "\[Rule]", "Null"}], ",", 
+     RowBox[{"\<\"full_formula\"\>", "\[Rule]", "\<\"Fe12C4\"\>"}]}], 
+    "\[RightAssociation]"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.8080678497042956`*^9, 3.8080678551038866`*^9}, {
+   3.808067957457266*^9, 3.808067967325432*^9}, 3.808068183887747*^9, 
+   3.808069081035267*^9, {3.808069131067009*^9, 3.8080691447761197`*^9}, 
+   3.8080692065551195`*^9, 3.808069242433383*^9, {3.8080693282291307`*^9, 
+   3.808069334348173*^9}, {3.8080694318895793`*^9, 3.8080694779725285`*^9}, 
+   3.8080700967570615`*^9, 3.8080708695553784`*^9, {3.8080709619380407`*^9, 
+   3.808071003864328*^9}, 3.808071357518402*^9, 3.80807154758232*^9, 
+   3.808071605559101*^9, 3.8080717714708824`*^9, 3.808071869966866*^9, {
+   3.808071985462188*^9, 3.8080720018564825`*^9}, 3.808072035737584*^9, 
+   3.808072151819795*^9, {3.8080721948883877`*^9, 3.8080722325600853`*^9}, {
+   3.808072397146368*^9, 3.808072416040495*^9}, {3.8080724610656424`*^9, 
+   3.8080724753084197`*^9}, {3.8080725498259697`*^9, 3.8080726386942472`*^9}, 
+   3.808072681172827*^9, 3.808072720265666*^9, 3.8080727803125715`*^9, 
+   3.8080738906063633`*^9, 3.8080743952431755`*^9},
+ CellLabel->"Out[91]=",ExpressionUUID->"06f22ea6-1d19-4143-b353-5fdc490c80d2"]
+}, Open  ]]
+},
+WindowSize->{574.8, 579.6},
+WindowMargins->{{Automatic, -4.7999999999999545`}, {Automatic, 0}},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"221d2f5e-0b29-4318-b967-2bba772c7b7c"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 261, 4, 28, "Input",ExpressionUUID->"aadfb696-1d75-44eb-9f31-e115310550fb"],
+Cell[CellGroupData[{
+Cell[844, 28, 1701, 31, 146, "Input",ExpressionUUID->"993b5167-dd9b-44c9-866c-797c35916d34"],
+Cell[2548, 61, 22124, 455, 813, "Output",ExpressionUUID->"862da7ce-6f2d-4f08-9d5e-2203f289b918"],
+Cell[24675, 518, 1123, 15, 32, "Output",ExpressionUUID->"391fc1d3-6824-4c6f-bdc0-00d8f51d037b"],
+Cell[25801, 535, 1123, 15, 32, "Output",ExpressionUUID->"6a3a367a-56db-4af3-b29d-ab025ef8d3be"],
+Cell[26927, 552, 1206, 18, 32, "Output",ExpressionUUID->"4ad1d3c8-466d-48fd-9654-66f6c75c3aaa"],
+Cell[28136, 572, 1641, 25, 72, "Output",ExpressionUUID->"141871f6-33f6-40cd-afe0-f8a9f1b10ee9"],
+Cell[29780, 599, 11357, 224, 1652, "Output",ExpressionUUID->"01de505e-7fca-4920-ab1c-c0b46e037d4f"],
+Cell[41140, 825, 40476, 782, 7255, "Output",ExpressionUUID->"06f22ea6-1d19-4143-b353-5fdc490c80d2"]
+}, Open  ]]
+}
+]
+*)
+

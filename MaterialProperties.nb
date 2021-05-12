@@ -1,0 +1,333 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     14051,        325]
+NotebookOptionsPosition[     13422,        307]
+NotebookOutlinePosition[     13880,        324]
+CellTagsIndexPosition[     13837,        321]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"BeginPackage", "[", "\"\<MaterialProperties`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"MaterialProperties", "::", "usage"}], "=", 
+    "\"\<use the REST API to get materials data from materialsproject.org.  \
+https://materialsproject.org/docs/api section 4.3.1 for list of available \
+properties. This implementation has limited functionality (2020-09-02), so \
+try out the website or direct API calls instead of this wrapper function via \
+URLBuild, URLExecute, and Association Key Mapping (e.g. \
+<|\\\"a\\\"->b|>[\\\"a\\\"]). You will also need to specify a personal key by \
+updating the myKey value inside the MaterialProperties function and resaving \
+MaterialProperties.nb as MaterialProperties.m in a $Path folder (change \
+filetype to .m in dropdown). I recommend workflow/GetDataFromARESTfulAPI for \
+some basic guidelines on accessing APIs.\n\nExample usage:\n\t\
+MaterialProperties[\\\"Fe3C\\\"] (*get material properties for \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\\\"Fe3C\\\", \\\
+\"spacegroup\\\"] (*get the spacegroup properties of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\\\"Fe3C\\\", \\\
+\"spacegroup\\\", \\\"number\\\"] (*get the spacegroup number of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*) \n\tMaterialProperties[\\\"Fe3C\\\", \
+\\\"\\\" ,\\\"\\\" , 0] (*get material properties for all database entries of \
+\!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\\\"Fe3C\\\", \\\
+\"\\\" ,\\\"\\\" , 4] (*get material properties for the first 4 database \
+entries of \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C (or all entries, if # entries \
+< 4);\n\tMaterialProperties[\\\"Fe3C\\\", \\\"spacegroup\\\", \\\"number\\\", \
+0] (*get a list of possible spacegroup numbers for \!\(\*SubscriptBox[\(Fe\), \
+\(3\)]\)C*)\n\nGeneral URI format: Get \
+https://www.materialsproject.org/rest/v2/materials/{material id, formula, or \
+chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Begin", "[", "\"\<Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"MaterialProperties", "[", 
+    RowBox[{"formula_String", ",", 
+     RowBox[{"property_", ":", "\"\<\>\""}], ",", 
+     RowBox[{"subproperty_", ":", "\"\<\>\""}], ",", 
+     RowBox[{"requestedEntries_Integer", ":", "1"}]}], "]"}], ":=", 
+   "\[IndentingNewLine]", 
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "urlRoot", ",", "myKey", ",", "requestURI", ",", "response", ",", 
+       "maxEntries", ",", "numEntries", ",", "propertyKey", ",", 
+       "subpropertyKey", ",", "out"}], "}"}], ",", "\[IndentingNewLine]", 
+     RowBox[{
+      RowBox[{
+      "urlRoot", "=", 
+       "\"\<https://www.materialsproject.org/rest/v2/materials/\>\""}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"myKey", "=", "\"\<JHlWQRu5mpE4FC72\>\""}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"requestURI", "=", 
+       RowBox[{"URLBuild", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+          "urlRoot", ",", "formula", ",", "\"\<vasp\>\"", ",", "property"}], 
+          "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"\"\<API_KEY\>\"", "->", "myKey"}], "}"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"response", "=", 
+       RowBox[{"URLExecute", "[", 
+        RowBox[{"requestURI", ",", "\"\<rawJSON\>\""}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"maxEntries", "=", 
+       RowBox[{"Length", "@", "response"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"requestedEntries", "\[Equal]", "0"}], ",", " ", 
+        RowBox[{
+         RowBox[{"numEntries", "=", "maxEntries"}], ";"}], ",", " ", 
+        RowBox[{
+         RowBox[{"numEntries", "=", 
+          RowBox[{"Min", "[", 
+           RowBox[{"{", 
+            RowBox[{"maxEntries", ",", "requestedEntries"}], "}"}], "]"}]}], 
+         ";"}]}], "]"}], ";", "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"property", "\[Equal]", "\"\<\>\""}], ",", 
+        RowBox[{
+         RowBox[{"propertyKey", "=", 
+          RowBox[{"Sequence", "[", "]"}]}], ";"}], ",", 
+        RowBox[{
+         RowBox[{"propertyKey", "=", "property"}], ";"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"subproperty", "\[Equal]", "\"\<\>\""}], ",", 
+        RowBox[{
+         RowBox[{"subpropertyKey", "=", 
+          RowBox[{"Sequence", "[", "]"}]}], ";"}], ",", 
+        RowBox[{
+         RowBox[{"subpropertyKey", "=", "subproperty"}], ";"}]}], "]"}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"out", "=", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{
+           RowBox[{
+            RowBox[{"Lookup", "[", 
+             RowBox[{"response", ",", "\"\<response\>\""}], "]"}], 
+            "\[LeftDoubleBracket]", "#", "\[RightDoubleBracket]"}], "[", 
+           "propertyKey", "]"}], "[", "subpropertyKey", "]"}], "&"}], "/@", 
+        RowBox[{"Range", "[", "numEntries", "]"}]}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{
+          RowBox[{"Length", "@", "out"}], "\[Equal]", "1"}], " ", "&&", 
+         RowBox[{"requestedEntries", "\[Equal]", "1"}]}], " ", ",", 
+        RowBox[{"out", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
+         ",", "out"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"End", "[", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"EndPackage", "[", "]"}]}], "Input",
+ InitializationCell->True,
+ CellChangeTimes->{{3.808058383220111*^9, 3.8080583843022046`*^9}, {
+   3.808058519293931*^9, 3.808058522342015*^9}, {3.8080585621429405`*^9, 
+   3.808058630550281*^9}, {3.808058684783537*^9, 3.808058700070037*^9}, {
+   3.808058731548851*^9, 3.8080587494221992`*^9}, {3.8080588130342827`*^9, 
+   3.8080589856340523`*^9}, {3.8080590462322073`*^9, 3.808059062637181*^9}, {
+   3.80805915582335*^9, 3.8080591594509664`*^9}, {3.80805926571148*^9, 
+   3.808059279165781*^9}, {3.8080593177483*^9, 3.8080594011772327`*^9}, {
+   3.8080594415048847`*^9, 3.808059454643865*^9}, {3.808059614199694*^9, 
+   3.8080596148018713`*^9}, {3.8080596579858336`*^9, 3.808059734449915*^9}, {
+   3.8080601438776255`*^9, 3.8080601637809877`*^9}, {3.8080613737371683`*^9, 
+   3.808061380352238*^9}, {3.8080615363389606`*^9, 3.8080616663123217`*^9}, {
+   3.808061719623654*^9, 3.808061756086155*^9}, {3.8080618793832207`*^9, 
+   3.8080619278021774`*^9}, {3.8080678724936647`*^9, 3.808067906369051*^9}, {
+   3.808068331363768*^9, 3.8080683553720837`*^9}, {3.808069280866954*^9, 
+   3.80806928329079*^9}, {3.808069347041921*^9, 3.808069369232153*^9}, {
+   3.8080694918372965`*^9, 3.8080695376099014`*^9}, {3.8080695964903173`*^9, 
+   3.8080696164089127`*^9}, {3.808069720330979*^9, 3.808069897642006*^9}, {
+   3.808069939928204*^9, 3.8080699981293774`*^9}, {3.8080700333221245`*^9, 
+   3.8080700693373404`*^9}, {3.8080701153557944`*^9, 3.808070119593796*^9}, {
+   3.8080701768498297`*^9, 3.808070445918392*^9}, {3.808070524947568*^9, 
+   3.8080705469125166`*^9}, {3.8080715079125834`*^9, 
+   3.8080715147366276`*^9}, {3.8080717430364776`*^9, 
+   3.8080717466920376`*^9}, {3.808071849022748*^9, 3.8080718550550985`*^9}, {
+   3.808071940006461*^9, 3.808071969806847*^9}, {3.8080720138582487`*^9, 
+   3.808072018767725*^9}, {3.808072160942235*^9, 3.8080721629712524`*^9}, 
+   3.808072391983724*^9, 3.8080724929424195`*^9, {3.808072687843196*^9, 
+   3.8080726993492713`*^9}, {3.8080728053497825`*^9, 
+   3.8080728058136187`*^9}, {3.8080731582282467`*^9, 
+   3.8080732672927713`*^9}, {3.808073310460121*^9, 3.8080733641961184`*^9}, {
+   3.80807342073195*^9, 3.8080735364764395`*^9}, {3.808073633539923*^9, 
+   3.8080736897399263`*^9}, {3.8080737461242514`*^9, 
+   3.8080738536839085`*^9}, {3.8080739432114353`*^9, 
+   3.8080739882994323`*^9}, {3.8080743587707596`*^9, 
+   3.8080743727307606`*^9}},ExpressionUUID->"561b596d-0bfe-4cf8-910f-\
+fcefdf0072d7"],
+
+Cell["Code Graveyard", "Text",
+ CellChangeTimes->{{3.8080704517538767`*^9, 
+  3.8080704720654907`*^9}},ExpressionUUID->"655f0d4a-b334-4c1b-b572-\
+758fed3ef7b2"],
+
+Cell[BoxData[
+ RowBox[{"(*", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"MaterialProperties", "[", 
+     RowBox[{"formula_String", ",", "property_String"}], "]"}], ":=", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{"urlRoot", ",", "myKey", ",", "requestURI", ",", "response"}], 
+       "}"}], ",", "\n", 
+      RowBox[{
+       RowBox[{
+       "urlRoot", "=", 
+        "\"\<https://www.materialsproject.org/rest/v2/materials/\>\""}], ";", 
+       "\n", 
+       RowBox[{"myKey", "=", "\"\<ABC\>\""}], ";", "\n", 
+       RowBox[{"requestURI", "=", 
+        RowBox[{"URLBuild", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "urlRoot", ",", "formula", ",", "\"\<vasp\>\"", ",", "property"}], 
+           "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<API_KEY\>\"", "->", "myKey"}], "}"}]}], "]"}]}], ";", 
+       "\n", 
+       RowBox[{"response", "=", 
+        RowBox[{"URLExecute", "[", 
+         RowBox[{"requestURI", ",", "\"\<rawJSON\>\""}], "]"}]}], ";", "\n", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Lookup", "[", 
+          RowBox[{"response", ",", "\"\<response\>\""}], "]"}], 
+         "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}], "[", 
+        "property", "]"}]}]}], " ", 
+     RowBox[{"(*", 
+      RowBox[{
+      "take", " ", "first", " ", "response", " ", "could", " ", "be", " ", 
+       "multiple", " ", "entries"}], "*)"}], "\n", "]"}]}], ";", "\n", "\n", 
+   RowBox[{
+    RowBox[{"MaterialProperties", "[", "formula_String", "]"}], ":=", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "urlRoot", ",", "myKey", ",", "requestURI", ",", "response", ",", 
+        "property"}], "}"}], ",", "\n", 
+      RowBox[{
+       RowBox[{"property", "=", "\"\<\>\""}], ";", "\n", 
+       RowBox[{
+       "urlRoot", "=", 
+        "\"\<https://www.materialsproject.org/rest/v2/materials/\>\""}], ";", 
+       "\n", 
+       RowBox[{"myKey", "=", "\"\<JHlWQRu5mpE4FC72\>\""}], ";", "\n", 
+       RowBox[{"requestURI", "=", 
+        RowBox[{"URLBuild", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "urlRoot", ",", "formula", ",", "\"\<vasp\>\"", ",", "property"}], 
+           "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<API_KEY\>\"", "->", "myKey"}], "}"}]}], "]"}]}], ";", 
+       "\n", 
+       RowBox[{"response", "=", 
+        RowBox[{"URLExecute", "[", 
+         RowBox[{"requestURI", ",", "\"\<rawJSON\>\""}], "]"}]}], ";", "\n", 
+       RowBox[{
+        RowBox[{"Lookup", "[", 
+         RowBox[{"response", ",", "\"\<response\>\""}], "]"}], 
+        "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}]}], 
+     RowBox[{"(*", 
+      RowBox[{
+      "take", " ", "first", " ", "response", " ", "could", " ", "be", " ", 
+       "multiple", " ", "entries"}], "*)"}], "\n", "]"}]}], ";", "\n", "\n", 
+   RowBox[{
+    RowBox[{"MaterialProperties", "[", 
+     RowBox[{"formula_String", ","}], "]"}], ":=", "\n", 
+    RowBox[{"Module", "[", 
+     RowBox[{
+      RowBox[{"{", 
+       RowBox[{
+       "urlRoot", ",", "myKey", ",", "requestURI", ",", "response", ",", 
+        "property"}], "}"}], ",", "\n", 
+      RowBox[{
+       RowBox[{"property", "=", "\"\<\>\""}], ";", "\n", 
+       RowBox[{
+       "urlRoot", "=", 
+        "\"\<https://www.materialsproject.org/rest/v2/materials/\>\""}], ";", 
+       "\n", 
+       RowBox[{"myKey", "=", "\"\<JHlWQRu5mpE4FC72\>\""}], ";", "\n", 
+       RowBox[{"requestURI", "=", 
+        RowBox[{"URLBuild", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{
+           "urlRoot", ",", "formula", ",", "\"\<vasp\>\"", ",", "property"}], 
+           "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"\"\<API_KEY\>\"", "->", "myKey"}], "}"}]}], "]"}]}], ";", 
+       "\n", 
+       RowBox[{"response", "=", 
+        RowBox[{"URLExecute", "[", 
+         RowBox[{"requestURI", ",", "\"\<rawJSON\>\""}], "]"}]}], ";", "\n", 
+       RowBox[{
+        RowBox[{"Lookup", "[", 
+         RowBox[{"response", ",", "\"\<response\>\""}], "]"}], 
+        "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}]}]}], 
+     RowBox[{"(*", 
+      RowBox[{
+      "take", " ", "first", " ", "response", " ", "could", " ", "be", " ", 
+       "multiple", " ", "entries"}], "*)"}], "\n", "]"}]}], ";"}], "\n", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.8080704682046614`*^9, 
+  3.808070479453133*^9}},ExpressionUUID->"e4648807-d833-44d0-864f-\
+cf5396887de2"]
+},
+WindowSize->{574.8, 574.8},
+WindowMargins->{{Automatic, 1.2000000000000455`}, {Automatic, 0}},
+TaggingRules->{"TryRealOnly" -> False},
+FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"e452b553-1894-4851-b04b-3a9ef9331e3a"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 8194, 162, 1293, "Input",ExpressionUUID->"561b596d-0bfe-4cf8-910f-fcefdf0072d7",
+ InitializationCell->True],
+Cell[8755, 184, 160, 3, 35, "Text",ExpressionUUID->"655f0d4a-b334-4c1b-b572-758fed3ef7b2"],
+Cell[8918, 189, 4500, 116, 731, "Input",ExpressionUUID->"e4648807-d833-44d0-864f-cf5396887de2"]
+}
+]
+*)
+
