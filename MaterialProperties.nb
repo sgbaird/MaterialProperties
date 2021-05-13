@@ -3,17 +3,17 @@
 (*** Wolfram Notebook File ***)
 (* http://www.wolfram.com/nb *)
 
-(* CreatedBy='Mathematica 12.1' *)
+(* CreatedBy='Mathematica 12.2' *)
 
 (*CacheID: 234*)
 (* Internal cache information:
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[     14051,        325]
-NotebookOptionsPosition[     13422,        307]
-NotebookOutlinePosition[     13880,        324]
-CellTagsIndexPosition[     13837,        321]
+NotebookDataLength[     15264,        357]
+NotebookOptionsPosition[     14630,        339]
+NotebookOutlinePosition[     15092,        356]
+CellTagsIndexPosition[     15049,        353]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -23,19 +23,25 @@ Cell[BoxData[{
   RowBox[{"BeginPackage", "[", "\"\<MaterialProperties`\>\"", "]"}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
+  RowBox[{"Unprotect", "[", "\"\<MaterialProperties`*\>\"", "]"}], 
+  ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<MaterialProperties`*\>\"", "]"}], ";"}], "\n", 
+ RowBox[{
+  RowBox[{"ClearAll", "[", "\"\<MaterialProperties`Private`*\>\"", "]"}], 
+  ";"}], "\n", 
+ RowBox[{
   RowBox[{
-   RowBox[{
-    RowBox[{"MaterialProperties", "::", "usage"}], "=", 
-    "\"\<use the REST API to get materials data from materialsproject.org.  \
+   RowBox[{"MaterialProperties", "::", "usage"}], "=", 
+   "\"\<use the REST API to get materials data from materialsproject.org.  \
 https://materialsproject.org/docs/api section 4.3.1 for list of available \
 properties. This implementation has limited functionality (2020-09-02), so \
 try out the website or direct API calls instead of this wrapper function via \
 URLBuild, URLExecute, and Association Key Mapping (e.g. \
-<|\\\"a\\\"->b|>[\\\"a\\\"]). You will also need to specify a personal key by \
-updating the myKey value inside the MaterialProperties function and resaving \
-MaterialProperties.nb as MaterialProperties.m in a $Path folder (change \
-filetype to .m in dropdown). I recommend workflow/GetDataFromARESTfulAPI for \
-some basic guidelines on accessing APIs.\n\nExample usage:\n\t\
+<|\\\"a\\\"->b|>[\\\"a\\\"]). Specify a personal key by using SetKey[] as in \
+SetKey[\\\"abcd123\\\"]. Alternatively, you can manually add it to your copy \
+of MaterialProperties.m. I recommend workflow/GetDataFromARESTfulAPI for some \
+basic guidelines on accessing APIs.\n\nExample usage:\n\t\
 MaterialProperties[\\\"Fe3C\\\"] (*get material properties for \
 \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C*)\n\tMaterialProperties[\\\"Fe3C\\\", \\\
 \"spacegroup\\\"] (*get the spacegroup properties of \
@@ -50,10 +56,20 @@ entries of \!\(\*SubscriptBox[\(Fe\), \(3\)]\)C (or all entries, if # entries \
 0] (*get a list of possible spacegroup numbers for \!\(\*SubscriptBox[\(Fe\), \
 \(3\)]\)C*)\n\nGeneral URI format: Get \
 https://www.materialsproject.org/rest/v2/materials/{material id, formula, or \
-chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}], 
-  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetKey", "::", "usage"}], "=", "\"\<SetKey[myKey]\>\""}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{"Begin", "[", "\"\<Private`\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"Options", "[", "MaterialProperties", "]"}], "=", 
+   RowBox[{"{", 
+    RowBox[{"\"\<myKey\>\"", "\[Rule]", "\"\<\>\""}], "}"}]}], 
   ";"}], "\[IndentingNewLine]", 
  RowBox[{
   RowBox[{
@@ -61,7 +77,8 @@ chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}],
     RowBox[{"formula_String", ",", 
      RowBox[{"property_", ":", "\"\<\>\""}], ",", 
      RowBox[{"subproperty_", ":", "\"\<\>\""}], ",", 
-     RowBox[{"requestedEntries_Integer", ":", "1"}]}], "]"}], ":=", 
+     RowBox[{"requestedEntries_Integer", ":", "1"}], ",", 
+     RowBox[{"OptionsPattern", "[", "]"}]}], "]"}], ":=", 
    "\[IndentingNewLine]", 
    RowBox[{"Module", "[", 
     RowBox[{
@@ -75,7 +92,8 @@ chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}],
       "urlRoot", "=", 
        "\"\<https://www.materialsproject.org/rest/v2/materials/\>\""}], ";", 
       "\[IndentingNewLine]", 
-      RowBox[{"myKey", "=", "\"\<JHlWQRu5mpE4FC72\>\""}], ";", 
+      RowBox[{"myKey", "=", 
+       RowBox[{"OptionValue", "[", "\"\<myKey\>\"", "]"}]}], ";", 
       "\[IndentingNewLine]", 
       RowBox[{"requestURI", "=", 
        RowBox[{"URLBuild", "[", 
@@ -143,7 +161,17 @@ chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}],
         RowBox[{"out", "\[LeftDoubleBracket]", "1", "\[RightDoubleBracket]"}],
          ",", "out"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]}], 
   ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"SetKey", "[", "myKey_", "]"}], ":=", 
+   RowBox[{"SetOptions", "[", 
+    RowBox[{"MaterialProperties", ",", 
+     RowBox[{"\"\<myKey\>\"", "\[Rule]", "myKey"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{"End", "[", "]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Protect", "[", "\"\<MaterialProperties`*\>\"", "]"}], 
+  ";"}], "\[IndentingNewLine]", 
  RowBox[{"EndPackage", "[", "]"}]}], "Input",
  InitializationCell->True,
  CellChangeTimes->{{3.808058383220111*^9, 3.8080583843022046`*^9}, {
@@ -178,8 +206,12 @@ chemical system}/vasp/{property}?API_KEY=YOUR_API_KEY\n\>\""}], ";"}],
    3.80807342073195*^9, 3.8080735364764395`*^9}, {3.808073633539923*^9, 
    3.8080736897399263`*^9}, {3.8080737461242514`*^9, 
    3.8080738536839085`*^9}, {3.8080739432114353`*^9, 
-   3.8080739882994323`*^9}, {3.8080743587707596`*^9, 
-   3.8080743727307606`*^9}},ExpressionUUID->"561b596d-0bfe-4cf8-910f-\
+   3.8080739882994323`*^9}, {3.8080743587707596`*^9, 3.8080743727307606`*^9}, 
+   3.8298672832719283`*^9, {3.82986739276756*^9, 3.8298674068749256`*^9}, {
+   3.8298674369937353`*^9, 3.8298674556278496`*^9}, {3.8298674857345514`*^9, 
+   3.829867600862571*^9}, {3.8298676530229883`*^9, 3.829867676062944*^9}, 
+   3.829868085088417*^9, {3.829868158127123*^9, 
+   3.8298681762545347`*^9}},ExpressionUUID->"561b596d-0bfe-4cf8-910f-\
 fcefdf0072d7"],
 
 Cell["Code Graveyard", "Text",
@@ -306,9 +338,9 @@ Cell[BoxData[
 cf5396887de2"]
 },
 WindowSize->{574.8, 574.8},
-WindowMargins->{{Automatic, 1.2000000000000455`}, {Automatic, 0}},
+WindowMargins->{{Automatic, 1.7999999999999545`}, {Automatic, 0}},
 TaggingRules->{"TryRealOnly" -> False},
-FrontEndVersion->"12.1 for Microsoft Windows (64-bit) (June 19, 2020)",
+FrontEndVersion->"12.2 for Microsoft Windows (64-bit) (December 12, 2020)",
 StyleDefinitions->"Default.nb",
 ExpressionUUID->"e452b553-1894-4851-b04b-3a9ef9331e3a"
 ]
@@ -323,10 +355,10 @@ CellTagsIndex->{}
 *)
 (*NotebookFileOutline
 Notebook[{
-Cell[558, 20, 8194, 162, 1293, "Input",ExpressionUUID->"561b596d-0bfe-4cf8-910f-fcefdf0072d7",
+Cell[558, 20, 9415, 194, 1430, "Input",ExpressionUUID->"561b596d-0bfe-4cf8-910f-fcefdf0072d7",
  InitializationCell->True],
-Cell[8755, 184, 160, 3, 35, "Text",ExpressionUUID->"655f0d4a-b334-4c1b-b572-758fed3ef7b2"],
-Cell[8918, 189, 4500, 116, 731, "Input",ExpressionUUID->"e4648807-d833-44d0-864f-cf5396887de2"]
+Cell[9976, 216, 160, 3, 35, "Text",ExpressionUUID->"655f0d4a-b334-4c1b-b572-758fed3ef7b2"],
+Cell[10139, 221, 4487, 116, 731, "Input",ExpressionUUID->"e4648807-d833-44d0-864f-cf5396887de2"]
 }
 ]
 *)
